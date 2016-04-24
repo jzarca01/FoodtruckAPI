@@ -1,0 +1,32 @@
+{
+  "name": "foodtttruckapi",
+  "version": "1.0.0",
+  "description": "![Alt text](/demo/Demo.gif)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jeremie Zarca <jeremie.zarca@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.15.0",
+    "express": "^4.13.4",
+    "request": "^2.71.0"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jzarca01/FoodtttruckAPI.git"
+  },
+  "keywords": [
+    "foodtruck",
+    "api",
+    "tttruck.com",
+    "unofficial",
+    "JSON"
+  ],
+  "bugs": {
+    "url": "https://github.com/jzarca01/FoodtruckAPI/issues"
+  },
+  "homepage": "https://github.com/jzarca01/FoodtruckAPI#readme"
+}
