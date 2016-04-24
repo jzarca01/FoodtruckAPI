@@ -1,8 +1,8 @@
 {
   "name": "foodtttruckapi",
   "version": "1.0.0",
-  "description": "![Alt text](/demo/Demo.gif)",
-  "main": "index.js",
+  "description": "An unofficial tttruck.com API to find foodtrucks",
+  "main": "apitttruck.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -16,7 +16,7 @@
   "devDependencies": {},
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jzarca01/FoodtttruckAPI.git"
+    "url": "git+https://github.com/jzarca01/FoodtruckAPI.git"
   },
   "keywords": [
     "foodtruck",
