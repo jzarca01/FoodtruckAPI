@@ -104,7 +104,7 @@ function getFoodtruck(res, day, time, address, tag, distance, callback) {
 
           if(parseInt($(item).attr('data-distance'), 10) <= distance)
           {
-            if(getTags($(item).attr('data-tags'), tag))
+            if(tag && getTags($(item).attr('data-tags'), tag))
             {
               var adresses = $(item).find('p:first-of-type');
               var span0 = $(adresses);
@@ -127,6 +127,29 @@ function getFoodtruck(res, day, time, address, tag, distance, callback) {
                 adresse : adresse
               };
             }
+            else {
+              var adresses = $(item).find('p:first-of-type');
+              var span0 = $(adresses);
+
+              tmp = span0.text().replace(/\s\s/g, '');
+              adresse = tmp.substring(10);
+              while(adresse[0] == "0" || adresse[0] == " " || adresse[0] == ",")
+              adresse = adresse.substring(1);
+
+              items[i] = {
+                image:   $(item).attr('data-cover'),
+                name:   $(item).attr('data-name'),
+                tags:     $(item).attr('data-tags'),
+                latitude:  $(item).attr('data-latitude'),
+                longitude:  $(item).attr('data-longitude'),
+                distance:   $(item).attr('data-distance'),
+                open:  $(item).attr('data-open'),
+                starttime:  $(item).attr('data-starttime'),
+                endtime:   $(item).attr('data-endtime'),
+                adresse : adresse
+              };
+            }
+
           }
         });
 
