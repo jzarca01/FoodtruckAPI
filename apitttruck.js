@@ -39,12 +39,12 @@ app.get('/foodtruck', function (req, res) {
   if(req.query.tag)
   var tag = req.query.tag;
 
-  if(req.query.radius)
-  var radius = req.query.radius;
+  if(req.query.distance)
+  var distance = req.query.distance;
   else
-  var radius = 5000;
+  var distance = 5000;
 
-  getFoodtruck(res, day, time, address, tag, radius);
+  getFoodtruck(res, day, time, address, tag, distance);
 
 })
 
@@ -76,10 +76,10 @@ function getTags(string, tag) {
   return false;
 }
 
-function getFoodtruck(res, day, time, address, tag, radius, callback) {
+function getFoodtruck(res, day, time, address, tag, distance, callback) {
 
   var items = new Array();//I feel like I want to save my results in an array
-  console.log("day :", day, " time : ", time, " address :", address, "tag :", tag, " radius :", radius);
+  console.log("day :", day, " time : ", time, " address :", address, "tag :", tag, " distance :", distance);
   if(tag)
   var uri = 'http://tttruck.com/find/'+day+'/'+time+'/'+address+'?tag='+tag;
   else
@@ -102,7 +102,7 @@ function getFoodtruck(res, day, time, address, tag, radius, callback) {
         var i = 0;
         $restaurant.each( function(i, item) {
 
-          if(parseInt($(item).attr('data-distance'), 10) <= radius)
+          if(parseInt($(item).attr('data-distance'), 10) <= distance)
           {
             if(getTags($(item).attr('data-tags'), tag))
             {
