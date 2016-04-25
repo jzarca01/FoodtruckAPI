@@ -15,7 +15,13 @@ time { if empty: lunch | breakfast | lunch | dinner | night }
 
 address { if empty : Paris-France | ex: 5 Avenue Anatole France 75007 Paris, France }
 
+In theory, it is also possible to filter by tags but it doesn't seem to filter
+
+tags { africain, americain, asiatique, bagel, bar-a-jus, boulangerie, burger, cafe, chinois, coreen, crepes-galettes, cuisine-du-monde, cuisine-francaise, cuisine-orientale, fruits-de-mer, indien, italien, japonais, kebab, libanais, mediterraneen, mexicain, pates, pizza, rotisserie, sandwiches-salades, sucre, tex-mex, triporteur, vietnamien, wrap }
+
 Open browser to http://localhost:5001/foodtruck?day=today&time=lunch&address=5 Avenue Anatole France 75007 Paris, France
+
+If using tags, Open browser to http://localhost:5001/foodtruck?day=today&time=lunch&address=5 Avenue Anatole France 75007 Paris, France&tag=kebab
 
 # Output
 
@@ -37,7 +43,9 @@ Open browser to http://localhost:5001/foodtruck?day=today&time=lunch&address=5 A
     
     starttime: '19:00',
     
-    endtime: '22:30'
+    endtime: '22:30',
+    
+    adresse: '132 avenue de france, Paris '
     
     } 
     
