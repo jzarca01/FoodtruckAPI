@@ -1,32 +1,36 @@
 {
   "name": "foodtttruckapi",
   "version": "1.0.0",
-  "description": "An unofficial tttruck.com API to find foodtrucks",
+  "description": "An unofficial API for foodtruck spotting website tttruck.com",
   "main": "apitttruck.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Jeremie Zarca <jeremie.zarca@gmail.com>",
-  "license": "ISC",
   "dependencies": {
     "body-parser": "^1.15.0",
     "express": "^4.13.4",
-    "request": "^2.71.0"
+    "html-to-json": "^0.6.0",
+    "http": "^0.0.0",
+    "jsdom": "^8.4.0",
+    "natural": "^0.4.0",
+    "querystring": "^0.2.0",
+    "request": "^2.72.0"
   },
   "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jzarca01/FoodtruckAPI.git"
+    "url": "git+https://github.com/jzarca01/FoodtttruckAPI.git"
   },
   "keywords": [
     "foodtruck",
     "api",
-    "tttruck.com",
     "unofficial",
-    "JSON"
+    "tttruck.com"
   ],
+  "author": "Jeremie Zarca <jeremie.zarca@gmail.com>",
+  "license": "ISC",
   "bugs": {
-    "url": "https://github.com/jzarca01/FoodtruckAPI/issues"
+    "url": "https://github.com/jzarca01/FoodtttruckAPI/issues"
   },
-  "homepage": "https://github.com/jzarca01/FoodtruckAPI#readme"
+  "homepage": "https://github.com/jzarca01/FoodtttruckAPI#readme"
 }
