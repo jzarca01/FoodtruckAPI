@@ -33,9 +33,11 @@ app.get('/foodtruck', function (req, res) {
     var address = req.query.address;
   else
     var address = "Paris-France";
+  
+  if(req.query.tag)
+    var tag = req.query.tag;
 
-
-  getFoodtruck(res, day, time, address);
+  getFoodtruck(res, day, time, address, tag);
 
 })
 
@@ -46,11 +48,14 @@ function displayResult(result, res)
   //res.write(result[0]);
 }
 
-function getFoodtruck(res, day, time, address, callback) {
+function getFoodtruck(res, day, time, address, tag, callback) {
 
   var items = new Array();//I feel like I want to save my results in an array
   console.log("day :", day, " time : ", time, " address :", address);
-  var uri = 'http://tttruck.com/find/'+day+'/'+time+'/'+address;
+  if(tag)
+    var uri = 'http://tttruck.com/find/'+day+'/'+time+'/'+address+'?tag='+tag;
+  else
+  	var uri = 'http://tttruck.com/find/'+day+'/'+time+'/'+address;
   console.log("uri : ", uri);
 request({uri: uri}, function(err, response, body){
 
@@ -65,11 +70,19 @@ request({uri: uri}, function(err, response, body){
         //Use jQuery just as in a regular HTML page
         var $ = window.jQuery;
         var $body = $('body');
-        var $videos = $body.find('li.restaurant');
+        var $restaurant = $body.find('li.restaurant');
+        
+        $restaurant.each( function(i, item) {
 
-        $videos.each( function(i, item) {
-
-          items[i] = {
+		var adresses = $(item).find('p:first-of-type');
+		var span0 = $(adresses);	
+			
+		tmp = span0.text().replace(/\s\s/g, '');
+		adresse = tmp.substring(10);
+		while(adresse[0] == "0" || adresse[0] == " " || adresse[0] == ",")
+			adresse = adresse.substring(1);
+		
+		items[i] = {
             image:   $(item).attr('data-cover'),
             name:   $(item).attr('data-name'),
             tags:     $(item).attr('data-tags'),
@@ -78,7 +91,8 @@ request({uri: uri}, function(err, response, body){
             distance:   $(item).attr('data-distance'),
             open:  $(item).attr('data-open'),
             starttime:  $(item).attr('data-starttime'),
-            endtime:   $(item).attr('data-endtime')
+            endtime:   $(item).attr('data-endtime'),
+			adresse : adresse
           };
         });
 
@@ -96,3 +110,4 @@ exports.getFoodtruck = getFoodtruck;
 app.listen(app.get('port'), function() {
   console.log('running on port', app.get('port'))
 })
+
