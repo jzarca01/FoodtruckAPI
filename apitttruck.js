@@ -5,6 +5,7 @@ var app = express();
 var jsdom = require("jsdom");
 var http = require("http");
 var qs = require('querystring');
+var natural = require('natural');
 
 var htmlToJson = require("html-to-json");
 
@@ -21,23 +22,29 @@ app.use(bodyParser.json())
 app.get('/foodtruck', function (req, res) {
 
   if(req.query.day)
-    var day = req.query.day;
+  var day = req.query.day;
   else
-    var day = "today";
+  var day = "today";
 
   if(req.query.day)
-    var time = req.query.time;
+  var time = req.query.time;
   else
-    var time = "lunch";
-  if(req.query.address)
-    var address = req.query.address;
-  else
-    var address = "Paris-France";
-  
-  if(req.query.tag)
-    var tag = req.query.tag;
+  var time = "lunch";
 
-  getFoodtruck(res, day, time, address, tag);
+  if(req.query.address)
+  var address = req.query.address;
+  else
+  var address = "Paris-France";
+
+  if(req.query.tag)
+  var tag = req.query.tag;
+
+  if(req.query.radius)
+  var radius = req.query.radius;
+  else
+  var radius = 5000;
+
+  getFoodtruck(res, day, time, address, tag, radius);
 
 })
 
@@ -48,16 +55,37 @@ function displayResult(result, res)
   //res.write(result[0]);
 }
 
-function getFoodtruck(res, day, time, address, tag, callback) {
+function cleanArray(actual) {
+  var newArray = new Array();
+  for (var i = 0; i < actual.length; i++) {
+    if (actual[i]) {
+      newArray.push(actual[i]);
+    }
+  }
+  return newArray;
+}
+
+function getTags(string, tag) {
+  string = string.replace(/[, ]+$/, '');
+  var test = string.split(',');
+  for (i = 0; i < test.length; i++){
+    if(natural.JaroWinklerDistance(test[i], tag) > 0.8){
+      return true;
+    }
+  }
+  return false;
+}
+
+function getFoodtruck(res, day, time, address, tag, radius, callback) {
 
   var items = new Array();//I feel like I want to save my results in an array
-  console.log("day :", day, " time : ", time, " address :", address);
+  console.log("day :", day, " time : ", time, " address :", address, "tag :", tag, " radius :", radius);
   if(tag)
-    var uri = 'http://tttruck.com/find/'+day+'/'+time+'/'+address+'?tag='+tag;
+  var uri = 'http://tttruck.com/find/'+day+'/'+time+'/'+address+'?tag='+tag;
   else
-  	var uri = 'http://tttruck.com/find/'+day+'/'+time+'/'+address;
+  var uri = 'http://tttruck.com/find/'+day+'/'+time+'/'+address;
   console.log("uri : ", uri);
-request({uri: uri}, function(err, response, body){
+  request({uri: uri}, function(err, response, body){
 
     //Just a basic error check
     if(err && response.statusCode !== 200){console.log('Request error.');}
@@ -71,33 +99,41 @@ request({uri: uri}, function(err, response, body){
         var $ = window.jQuery;
         var $body = $('body');
         var $restaurant = $body.find('li.restaurant');
-        
+        var i = 0;
         $restaurant.each( function(i, item) {
 
-		var adresses = $(item).find('p:first-of-type');
-		var span0 = $(adresses);	
-			
-		tmp = span0.text().replace(/\s\s/g, '');
-		adresse = tmp.substring(10);
-		while(adresse[0] == "0" || adresse[0] == " " || adresse[0] == ",")
-			adresse = adresse.substring(1);
-		
-		items[i] = {
-            image:   $(item).attr('data-cover'),
-            name:   $(item).attr('data-name'),
-            tags:     $(item).attr('data-tags'),
-            latitude:  $(item).attr('data-latitude'),
-            longitude:  $(item).attr('data-longitude'),
-            distance:   $(item).attr('data-distance'),
-            open:  $(item).attr('data-open'),
-            starttime:  $(item).attr('data-starttime'),
-            endtime:   $(item).attr('data-endtime'),
-			adresse : adresse
-          };
+          if(parseInt($(item).attr('data-distance'), 10) <= radius)
+          {
+            if(getTags($(item).attr('data-tags'), tag))
+            {
+              var adresses = $(item).find('p:first-of-type');
+              var span0 = $(adresses);
+
+              tmp = span0.text().replace(/\s\s/g, '');
+              adresse = tmp.substring(10);
+              while(adresse[0] == "0" || adresse[0] == " " || adresse[0] == ",")
+              adresse = adresse.substring(1);
+
+              items[i] = {
+                image:   $(item).attr('data-cover'),
+                name:   $(item).attr('data-name'),
+                tags:     $(item).attr('data-tags'),
+                latitude:  $(item).attr('data-latitude'),
+                longitude:  $(item).attr('data-longitude'),
+                distance:   $(item).attr('data-distance'),
+                open:  $(item).attr('data-open'),
+                starttime:  $(item).attr('data-starttime'),
+                endtime:   $(item).attr('data-endtime'),
+                adresse : adresse
+              };
+            }
+          }
         });
 
-          console.log(items);
-          displayResult(items, res);
+        items = cleanArray(items);
+        console.log(items);
+
+        displayResult(items, res);
       }
     });
   });
@@ -110,4 +146,3 @@ exports.getFoodtruck = getFoodtruck;
 app.listen(app.get('port'), function() {
   console.log('running on port', app.get('port'))
 })
-
