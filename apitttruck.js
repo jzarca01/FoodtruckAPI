@@ -1,13 +1,12 @@
-var express = require('express');
-var bodyParser = require('body-parser');
-var request = require('request');
-var app = express();
-var jsdom = require("jsdom");
-var http = require("http");
-var qs = require('querystring');
-var natural = require('natural');
-
-var htmlToJson = require("html-to-json");
+import express from 'express';
+import bodyParser from 'body-parser';
+import request from 'request';
+const app = express();
+import jsdom from "jsdom";
+import http from "http";
+import qs from 'querystring';
+import natural from 'natural';
+import htmlToJson from "html-to-json";
 
 
 app.set('port', (process.env.PORT || 5001))
@@ -19,7 +18,7 @@ app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json())
 
 // index
-app.get('/foodtruck', function (req, res) {
+app.get('/foodtruck', (req, res) => {
 
   if(req.query.day)
   var day = req.query.day;
@@ -37,7 +36,7 @@ app.get('/foodtruck', function (req, res) {
   var address = "Paris-France";
 
   if(req.query.tag)
-  var tag = req.query.tag;
+  const tag = req.query.tag;
 
   if(req.query.distance)
   var distance = req.query.distance;
@@ -56,8 +55,8 @@ function displayResult(result, res)
 }
 
 function cleanArray(actual) {
-  var newArray = new Array();
-  for (var i = 0; i < actual.length; i++) {
+  const newArray = new Array();
+  for (let i = 0; i < actual.length; i++) {
     if (actual[i]) {
       newArray.push(actual[i]);
     }
@@ -67,7 +66,7 @@ function cleanArray(actual) {
 
 function getTags(string, tag) {
   string = string.replace(/[, ]+$/, '');
-  var test = string.split(',');
+  const test = string.split(',');
   for (i = 0; i < test.length; i++){
     if(natural.JaroWinklerDistance(test[i], tag) > 0.8){
       return true;
@@ -78,14 +77,14 @@ function getTags(string, tag) {
 
 function getFoodtruck(res, day, time, address, tag, distance, callback) {
 
-  var items = new Array();//I feel like I want to save my results in an array
+  let items = new Array();//I feel like I want to save my results in an array
   console.log("day :", day, " time : ", time, " address :", address, "tag :", tag, " distance :", distance);
   if(tag)
-  var uri = 'http://tttruck.com/find/'+day+'/'+time+'/'+address+'?tag='+tag;
+  var uri = `http://tttruck.com/find/${day}/${time}/${address}?tag=${tag}`;
   else
-  var uri = 'http://tttruck.com/find/'+day+'/'+time+'/'+address;
+  var uri = `http://tttruck.com/find/${day}/${time}/${address}`;
   console.log("uri : ", uri);
-  request({uri: uri}, function(err, response, body){
+  request({uri}, (err, response, body) => {
 
     //Just a basic error check
     if(err && response.statusCode !== 200){console.log('Request error.');}
@@ -94,13 +93,13 @@ function getFoodtruck(res, day, time, address, tag, distance, callback) {
     jsdom.env({
       html: body,
       scripts: ['http://code.jquery.com/jquery-1.10.2.min.js'],
-      done: function(err, window){
+      done(err, window) {
         //Use jQuery just as in a regular HTML page
-        var $ = window.jQuery;
-        var $body = $('body');
-        var $restaurant = $body.find('li.restaurant');
-        var i = 0;
-        $restaurant.each( function(i, item) {
+        const $ = window.jQuery;
+        const $body = $('body');
+        const $restaurant = $body.find('li.restaurant');
+        const i = 0;
+        $restaurant.each( (i, item) => {
 
           if(parseInt($(item).attr('data-distance'), 10) <= distance)
           {
@@ -124,7 +123,7 @@ function getFoodtruck(res, day, time, address, tag, distance, callback) {
                 open:  $(item).attr('data-open'),
                 starttime:  $(item).attr('data-starttime'),
                 endtime:   $(item).attr('data-endtime'),
-                adresse : adresse
+                adresse
               };
             }
             else {
@@ -146,7 +145,7 @@ function getFoodtruck(res, day, time, address, tag, distance, callback) {
                 open:  $(item).attr('data-open'),
                 starttime:  $(item).attr('data-starttime'),
                 endtime:   $(item).attr('data-endtime'),
-                adresse : adresse
+                adresse
               };
             }
 
@@ -163,9 +162,10 @@ function getFoodtruck(res, day, time, address, tag, distance, callback) {
 
 }
 
-exports.getFoodtruck = getFoodtruck;
+export {getFoodtruck};
 
 // spin spin sugar
-app.listen(app.get('port'), function() {
+app.listen(app.get('port'), () => {
   console.log('running on port', app.get('port'))
 })
+
