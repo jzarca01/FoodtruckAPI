@@ -1,17 +1,13 @@
 {
   "name": "foodtttruckapi",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "An unofficial API for foodtruck spotting website tttruck.com",
-  "main": "apitttruck.js",
+  "main": "index.js",
   "dependencies": {
+    "axios": "^0.18.0",
     "body-parser": "^1.15.0",
     "express": "^4.13.4",
-    "html-to-json": "^0.6.0",
-    "http": "^0.0.0",
-    "jsdom": "^8.4.0",
-    "natural": "^0.4.0",
-    "querystring": "^0.2.0",
-    "request": "^2.72.0"
+    "jsdom": "^8.4.0"
   },
   "devDependencies": {},
   "scripts": {
@@ -24,10 +20,10 @@
   "keywords": [
     "foodtruck",
     "api",
-    "unofficial",
+    "nodejs",
     "tttruck.com"
   ],
-  "author": "Jeremie Zarca <jeremie.zarca@gmail.com>",
+  "author": "Jérémie Zarca <jeremie.zarca@gmail.com>",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/jzarca01/FoodtttruckAPI/issues"

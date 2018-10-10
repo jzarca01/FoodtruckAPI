@@ -1,53 +1,57 @@
 # FoodtruckAPI
 
-An unofficial tttruck.com API to find foodtrucks
+API Wrapper for tttruck.com API to find foodtrucks
 
-# How to call it
+## Usage
 
-node apitttruck.js
+```javascript
+const { getFoodtruck } = require('foodtttruckapi')
 
-Open browser to localhost:5001/foodtruck
-# Parameters
+async function init() {
+    try {
+        const trucks = await getFoodtruck({
+            day = 'today',
+            time = 'lunch',
+            address = 'Paris, France',
+            tag,
+            distance = 5000
+        })
+        console.log(trucks)
+    }   
+    catch(err) {
+        console.log(err)
+    }
+}
+```
 
-day { if empty: today | today | tomorrow | timestamp (no more than 3 days after) }
+## Parameters
 
-time { if empty: lunch | breakfast | lunch | dinner | night }
+- day : today | tomorrow | timestamp (no more than 3 days after)
+- time : breakfast | lunch | dinner | night
+- tag : [africain, americain, asiatique, bagel, bar-a-jus, boulangerie, burger, cafe, chinois, coreen, crepes-galettes, cuisine-du-monde, cuisine-francaise, cuisine-orientale, fruits-de-mer, indien, italien, japonais, kebab, libanais, mediterraneen, mexicain, pates, pizza, rotisserie, sandwiches-salades, sucre, tex-mex, triporteur, vietnamien, wrap]
 
-address { if empty : Paris-France | ex: 5 Avenue Anatole France 75007 Paris, France }
+## Example
 
-tag { africain, americain, asiatique, bagel, bar-a-jus, boulangerie, burger, cafe, chinois, coreen, crepes-galettes, cuisine-du-monde, cuisine-francaise, cuisine-orientale, fruits-de-mer, indien, italien, japonais, kebab, libanais, mediterraneen, mexicain, pates, pizza, rotisserie, sandwiches-salades, sucre, tex-mex, triporteur, vietnamien, wrap }
-
-distance { if empty: 5000 }
+```bash
+node example/index.js
+```
 
 Open browser to http://localhost:5001/foodtruck?day=today&time=lunch&address=5 Avenue Anatole France 75007 Paris, France
 
 If using tags, Open browser to http://localhost:5001/foodtruck?day=today&time=lunch&address=5 Avenue Anatole France 75007 Paris, France&tag=kebab&distance=2000
 
-# Output
+## Output
 
-    [
-    
-    { image: 'http://tttruck.com/media/cache/square_200/files/restaurant/le-camion-qui-fume-ii/bbf3dd3a333ec020e70984e6d0af5dd6.png',
-
-    name: 'Le Camion Qui Fume II',
-    
-    tags: 'Burger',
-    
-    latitude: '48.8317385',
-    
-    longitude: '2.3757138',
-    
-    distance: '0',
-    
-    open: 'open',
-    
-    starttime: '19:00',
-    
-    endtime: '22:30',
-    
-    adresse: '132 avenue de france, Paris '
-    
-    } 
-    
-    ] 
-    
+```json
+{
+	"image": "https://tttruck.com/media/cache/square_200/files/609b5ff98eff873443c4e5a74a6d55ce416e3cbf/679bf0dc0d32dbed637dcccd454309e8.jpeg",
+	"name": "il grando",
+	"latitude": 48.0756902,
+	"longitude": 0.1898536,
+	"distance": 0,
+	"open": "open",
+	"starttime": "17:30",
+	"endtime": "20:30",
+	"tags": ["pizza", "sucré"]
+}
+```
